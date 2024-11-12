@@ -18,6 +18,8 @@ function refreshWeather(response) {
     humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
     windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
     iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+
+    getForecast(response.data.city);
 }
 
 function formatDate(date) {
@@ -56,9 +58,16 @@ function handleSearchSubmit(event) {
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
-searchCity("Frankfurt");
 
-function displayForecast() {
+
+function getForecast(city) {
+    let apiKey = "0c43aab85t9fo6a6712276a1886b3109";
+    let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+    axios(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+    console.log(response.data);
   
 
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -80,4 +89,5 @@ function displayForecast() {
     let forecastElement = document.querySelector("#forecast");
     forecastElement.innerHTML = forecastHtml;
 }
-displayForecast();
+
+searchCity("Frankfurt");
